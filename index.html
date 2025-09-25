@@ -1,0 +1,482 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KindKart</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      background: linear-gradient(to bottom, #4facfe, #00f2fe);
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar h2 {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .navbar a {
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #fffa8b;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #4facfe;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #357ae8;
+    }
+
+    .btn.small {
+      padding: 6px 14px;
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 60px;
+      color: #fff;
+      flex: 1;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 25px;
+    }
+
+    .hero-buttons .btn {
+      margin: 5px;
+    }
+
+    /* Slider Section */
+    .slider-container {
+      position: relative;
+      width: 100%;          /* full width */
+      max-width: 1200px;    /* optional cap */
+      margin: 60px auto;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+      aspect-ratio: 16/9;   /* responsive ratio */
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  /* keeps proportion */
+      display: block;
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s;
+      border-radius: 6px;
+    }
+
+    .slider-btn:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .dots {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin: 0 5px;
+      background: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: #fff;
+    }
+
+    /* About Us section styling */
+    #overview {
+      display: none;
+      padding: 60px 20px;
+      background-color: rgba(0, 0, 0, 0.15);
+      color: #fff;
+      text-align: center;
+    }
+
+    #overview h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    #overview p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .gallery {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .cards {
+      list-style: none;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+
+    .cards li {
+      position: absolute;
+      width: 250px;
+      height: 300px;
+      background: #8a6be0;
+      color: #fff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      transition: transform 0.5s, opacity 0.5s;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .cards li img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover;
+      border: 3px solid #fff;
+    }
+
+    .cards li h3 {
+      margin: 5px 0;
+      font-size: 18px;
+    }
+
+    .cards li p {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .controls {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .controls button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .controls button:hover {
+      background: #45a049;
+    }
+
+    h1.feedback-heading {
+      text-align: center;
+      font-size: 2.5rem;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      margin-top: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <h2>KindKart</h2>
+      <div class="nav-actions">
+        <a id="nav-login" href="login.html" class="btn">SignIn / Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to KindKart</h1>
+      <p><i>Like a cart of kindness, food for good.</i></p>
+      <p>A smart platform connecting food donors with NGOs and volunteers to reduce food wastage and fight hunger using location-aware technology.</p>
+      <div class="hero-buttons">
+        <a href="#overview" class="btn" id="learnMoreBtn">Learn More</a>
+        <a href="login.html" class="btn">Get Started</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slider -->
+  <div class="slider-container">
+    <div class="slider" id="slider">
+      <div class="slide"><img src="img4.jpg" alt="Slide 1" /></div>
+      <div class="slide"><img src="img2.jpg" alt="Slide 2" /></div>
+      <div class="slide"><img src="img3.jpg" alt="Slide 3" /></div>
+    </div>
+
+    <button class="slider-btn prev" onclick="prevSlide()">❮</button>
+    <button class="slider-btn next" onclick="nextSlide()">❯</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <!-- About Us -->
+  <section id="overview">
+    <h2>About Us</h2>
+    <p>
+      At <strong>KindKart</strong>, we aim to create a bridge between generosity and necessity.
+      Our mission is to minimize food wastage and combat hunger by connecting food donors with nearby NGOs and volunteers through smart, location-based solutions.
+      <br><br>
+      Whether you’re a restaurant, household, or event host with surplus food, or a nonprofit organization or volunteer looking to serve your community—
+      KindKart provides an intuitive and efficient way to give back.
+      <br><br>
+      Together, we can make a difference—one meal, one act of kindness at a time.
+    </p>
+
+    <h1 class="feedback-heading">Feedback</h1>
+
+<div class="gallery">
+  <ul class="cards">
+    <li>
+      <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="User 1">
+      <h3>Priya</h3>
+      <p>"This website made everything so simple and stress-free. I’m grateful for the support I received."</p>
+    </li>
+    <li>
+      <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="User 2">
+      <h3>David</h3>
+      <p>"I was amazed by the quick response time and how smooth the whole process felt. Highly reliable!"</p>
+    </li>
+    <li>
+      <img src="https://randomuser.me/api/portraits/women/14.jpg" alt="User 3">
+      <h3>Lina</h3>
+      <p>"A wonderful platform that truly cares for people. The kindness I experienced here was heartwarming."</p>
+    </li>
+    <li>
+      <img src="https://randomuser.me/api/portraits/men/47.jpg" alt="User 4">
+      <h3>Arjun</h3>
+      <p>"Very professional and supportive. The volunteers went above and beyond to help me out."</p>
+    </li>
+    <li>
+      <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User 5">
+      <h3>Hannah</h3>
+      <p>"The entire experience was smooth, transparent, and filled with care. Truly inspiring work!"</p>
+    </li>
+  </ul>
+</div>
+
+
+    <div class="controls">
+      <button id="prev">Prev</button>
+      <button id="next">Next</button>
+    </div>
+  </section>
+
+  <!-- Script -->
+  <script>
+    const slider = document.getElementById("slider");
+    const slides = slider.querySelectorAll(".slide");
+    const totalSlides = slides.length;
+    const dotsContainer = document.getElementById("dots");
+    let currentIndex = 0;
+    let interval = setInterval(nextSlide, 5000);
+
+    function updateSlider() {
+      slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      updateDots();
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      updateSlider();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    }
+
+    function updateDots() {
+      dotsContainer.innerHTML = "";
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("dot");
+        if (i === currentIndex) dot.classList.add("active");
+        dot.onclick = () => {
+          currentIndex = i;
+          updateSlider();
+          resetInterval();
+        };
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function resetInterval() {
+      clearInterval(interval);
+      interval = setInterval(nextSlide, 5000);
+    }
+
+    updateSlider();
+
+    // Feedback carousel
+    const cards = document.querySelectorAll(".cards li");
+    let current = 0;
+
+    function updateCarousel() {
+      cards.forEach((card, i) => {
+        const offset = i - current;
+        if (offset === 0) {
+          card.style.transform = "translateX(0) scale(1)";
+          card.style.opacity = 1;
+          card.style.zIndex = 3;
+        } else if (offset === -1 || offset === cards.length - 1) {
+          card.style.transform = "translateX(-220px) scale(0.8)";
+          card.style.opacity = 0.7;
+          card.style.zIndex = 2;
+        } else if (offset === 1 || offset === -(cards.length - 1)) {
+          card.style.transform = "translateX(220px) scale(0.8)";
+          card.style.opacity = 0.7;
+          card.style.zIndex = 2;
+        } else {
+          card.style.transform = "translateX(0) scale(0.6)";
+          card.style.opacity = 0;
+          card.style.zIndex = 1;
+        }
+      });
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+      current = (current - 1 + cards.length) % cards.length;
+      updateCarousel();
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+      current = (current + 1) % cards.length;
+      updateCarousel();
+    });
+
+    updateCarousel();
+
+    // Learn More Button
+    document.getElementById("learnMoreBtn").addEventListener("click", function (e) {
+      e.preventDefault();
+      const aboutSection = document.getElementById("overview");
+      aboutSection.style.display = "block";
+      aboutSection.scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 KindKart | Together Against Hunger
+  </footer>
+</body>
+</html>
