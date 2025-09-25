@@ -3,6 +3,6 @@ KindKart aims to bridge the gap between surplus food donors (restaurants, events
 
 **Technologies Used:**
 
-HTML
-CSS
-JavaScript
+HTML,
+CSS,
+JavaScript.
